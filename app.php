@@ -9,8 +9,14 @@
 
 	$conexao = new Conexao();
 
-	$dashboard->__set('data_inicio', '2018-10-01');
-	$dashboard->__set('data_fim', '2018-10-31');
+	$competencia = explode('-', $_GET['competencia']);
+	$ano = $competencia[0];
+	$mes = $competencia[1];
+
+	$dias_do_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
+
+	$dashboard->__set('data_inicio', $ano . '-' . $mes . '-' . '01');
+	$dashboard->__set('data_fim', $ano . '-' . $mes . '-' . $dias_do_mes);
 
 	$bd = new Bd($conexao, $dashboard);
 
@@ -22,4 +28,5 @@
 	$dashboard->__set('total_elogios', $bd->getTotalElogios());
 	$dashboard->__set('total_sugestoes', $bd->getTotalSugestoes());
 	$dashboard->__set('total_despesas', $bd->getTotalDespesas());
-	print_r($dashboard);
+	
+	echo json_encode($dashboard);
